@@ -1,0 +1,26 @@
+{
+    "name": "Poet",
+    "version": "1.0",
+    "description": "An extension that shows a poem every time a new tab is launched.",
+    "manifest_version": 2,
+    "chrome_url_overrides" : {  "newtab": "newtab.html"},
+    "permissions": ["activeTab"],
+    "page_action": {
+        "default_popup":
+        "popup.html",
+        "default_icon":
+        {
+            "16": "images/img16.png",
+            "32": "images/img32.png",
+            "48": "images/img48.png",
+            "128": "images/img128.png"
+        }
+    },
+    "icons":
+    {
+        "16": "images/img16.png",
+        "32": "images/img32.png",
+        "48": "images/img48.png",
+        "128": "images/img128.png"
+    }
+}
