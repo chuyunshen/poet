@@ -24,9 +24,6 @@ helps you discover the poet in you.
 Download Poet from the Chrome extension web store at [insert link here].
 
 ## Demonstration
-<img src="https://imgur.com/6EaItVN.gif[/img]" alt="Main menu options" height="60">
-<br />
-<img src="https://imgur.com/GREH8Aw.gif[/img]" alt="Draft a birthday message" height="50">
 
 ## Questions and Contributions
 Feel free to open an issue and/or make a pull request.

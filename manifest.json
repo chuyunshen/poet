@@ -10,17 +10,17 @@
         "popup.html",
         "default_icon":
         {
-            "16": "images/img16.png",
-            "32": "images/img32.png",
-            "48": "images/img48.png",
-            "128": "images/img128.png"
+            "16": "images/poet16.png",
+            "32": "images/poet32.png",
+            "48": "images/poet48.png",
+            "128": "images/poet128.png"
         }
     },
     "icons":
     {
-        "16": "images/img16.png",
-        "32": "images/img32.png",
-        "48": "images/img48.png",
-        "128": "images/img128.png"
+        "16": "images/poet16.png",
+        "32": "images/poet32.png",
+        "48": "images/poet48.png",
+        "128": "images/poet128.png"
     }
 }
