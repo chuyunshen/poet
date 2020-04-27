@@ -1,0 +1,51 @@
+:root {
+    --title-font-size:24px;
+    --author-font-size:14px;
+    --poem-font-size:16px;
+}
+
+#title {
+    display: block;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 900;
+}
+
+#author {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 200;
+    font-family: 'Noto Serif JP', serif;
+    font-style: italic;
+}
+
+.poem {
+    white-space:pre-wrap;
+    font-size: 16px;
+    display: block;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Noto Serif JP', serif;
+}
+
+.img {
+    filter: grayscale(100%);
+}
+
+#poem-wrapper {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 3%;
+}
+
+.panel {
+    width: 500px;
+    padding: 20px;
+}
+
+/* See if I can apply style to images */
+

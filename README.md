@@ -8,7 +8,7 @@
 
 <p align="center">
 A Chrome extension that displays a poem every time a new tab is launched and
-helps you discover the poet in you.
+helps discover the poet in you.
 <br>
   <br>
 </p>
@@ -29,5 +29,5 @@ Download Poet from the Chrome extension web store at [insert link here].
 Feel free to open an issue and/or make a pull request.
 
 ## Copyright and License
-Genie is released under the [MIT License](https://opensource.org/licenses/MIT).
+Poet is released under the [MIT License](https://opensource.org/licenses/MIT).
 
