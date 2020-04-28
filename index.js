@@ -1,6 +1,7 @@
 const MAX_LINE = 40
-const COLORS = ['#fbf1c7', '#cc241d', '#94951A', '#D79921',
+const COLORS = ['#fbf1c7', '#94951A', '#D79921',
     '#458588', '#B16286','#689D6A', '#D65D0E'];
+// '#cc241d'
 
 var url ="https://en.wikipedia.org/w/api.php";
 
@@ -14,12 +15,10 @@ var params = {
     pithumbsize: "600"
 };
 
-
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-// TODO: Add catch here--when the Internet is down
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
     let response, json, author, title;
@@ -182,6 +181,13 @@ async function displayPoetImage(authorToDisplay, poemWrapper) {
             } else {
                 poemWrapper.lastChild.appendChild(image);
             }
+            // randomize horizontal position
+            image.style.cssFloat = getRandomInt(1) ? "left" : "right";
+            // randomize vertical position
+            if (getRandomInt(1)) {
+                image.style.position = "absolute";
+                image.style.bottom = "0";
+            }
         }
     } catch(error) {
         console.log(error);
@@ -270,3 +276,11 @@ heart.addEventListener('click', () => {
             unlike(poemWrapper, favPoems);
         }
     });
+
+const refresh = document.querySelector(".fa-redo-alt");
+refresh.addEventListener('click', () => {
+    titleToDisplay.innerHTML = '';
+    authorToDisplay.innerHTML = '';
+    poemWrapper.innerHTML = '';
+    displayAll(authorToDisplay, titleToDisplay, poemWrapper);
+})

@@ -45,6 +45,7 @@ img {
     filter: grayscale(100%);
     height: 250px;
     padding: 15px;
+
 }
 
 #poem-wrapper {
@@ -64,6 +65,7 @@ img {
 .panel:not(:first-child) {
     padding-top: 80px;
 }
+
 footer {
     position: fixed;
     bottom: 0;
@@ -71,14 +73,20 @@ footer {
     width: 100%;
 }
 
-.heart-button {
-    display: block;
+.fa-heart {
     font-size: 2em;
     color: #cc241d;
     margin-right: 60px;
     margin-bottom: 40px;
 }
 
-.fa-heart:hover {
+.fa-heart, .fa-redo-alt:hover {
     cursor: pointer;
+}
+
+.fa-redo-alt {
+    font-size: 2em;
+    color: lightgrey;
+    margin-right: 60px;
+    margin-bottom: 40px;
 }
