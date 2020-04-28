@@ -1,0 +1,73 @@
+html {
+    font-family: 'Noto Serif JP', serif;
+}
+
+#popup {
+    width: 400px;
+    height: 500px;
+    border-width:1px;
+    border-style: solid;
+    border-color: lightgrey;
+    border-radius: 2%;
+}
+
+input {
+    border-radius: 25px;
+    margin-top: 30px;
+    width: 80%;
+    height: 30px;
+    border-color: #f2f2f2;
+    border-style: solid;
+    font-size: 16px;
+    font-family: 'Noto Serif JP', serif;
+    margin: 30px 0 auto 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+input:hover {
+    box-shadow:0 0 10px lightgrey;
+}
+
+input:focus {
+    outline: none;
+}
+
+
+.fa-search {
+    color:lightgrey;
+    margin-top: 40px;
+    position: relative;
+    left: -30px;
+}
+
+#search-bar {
+    display: block;
+}
+
+.poem {
+    border-color: lightgrey;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 25px;
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+
+}
+
+.title {
+    display: block;
+    padding: 20px;
+    font-size: 16px;
+}
+
+.author {
+    text-align: right;
+    font-size: 12px;
+    right: 30px;
+    position: relative;
+    bottom: 10px;
+}
+
+
