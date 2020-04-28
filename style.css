@@ -4,13 +4,23 @@
     --poem-font-size:16px;
 }
 
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+body,html {
+    height:90%;
+}
+
 #title {
     display: block;
-    margin-top: 50px;
     text-align: center;
     font-size: 24px;
     font-family: 'Noto Serif JP', serif;
     font-weight: 900;
+    display: block;
 }
 
 #author {
@@ -19,6 +29,7 @@
     font-weight: 200;
     font-family: 'Noto Serif JP', serif;
     font-style: italic;
+    display: block;
 }
 
 .poem {
@@ -30,8 +41,10 @@
     font-family: 'Noto Serif JP', serif;
 }
 
-.img {
+img {
     filter: grayscale(100%);
+    height: 250px;
+    padding: 15px;
 }
 
 #poem-wrapper {
@@ -40,12 +53,32 @@
     justify-content: center;
     flex-wrap: wrap;
     padding: 0 3%;
+    align-items: center;
 }
 
 .panel {
-    width: 500px;
     padding: 20px;
+    max-width: 450px;
 }
 
-/* See if I can apply style to images */
+.panel:not(:first-child) {
+    padding-top: 80px;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    text-align: right;
+    width: 100%;
+}
 
+.heart-button {
+    display: block;
+    font-size: 2em;
+    color: #cc241d;
+    margin-right: 60px;
+    margin-bottom: 40px;
+}
+
+.fa-heart:hover {
+    cursor: pointer;
+}
