@@ -7,11 +7,21 @@
 <h3 align="center">Poet</h3>
 
 <p align="center">
-A Chrome extension that displays a poem every time a new tab is launched and
-helps discover the poet in you.
+A Chrome extension that displays a new poem every day upon new tab launches.
+
+<img src="" alt="Light mode" height="180">
+
+Built with JavaScript. Supports dark mode.
+<img src="" alt="Dark mode" height="180">
+
+Users can like and save poems.
+<img src="" alt="Save poem" height="180">
+
 <br>
-  <br>
+Poems are queried from [PoetryDB](https://github.com/thundercomb/poetrydb#license).
+Poet images are queried from [MediaWiki](https://www.mediawiki.org/wiki/MediaWiki).
 </p>
+
 
 ## Table of contents
 
@@ -30,4 +40,3 @@ Feel free to open an issue and/or make a pull request.
 
 ## Copyright and License
 Poet is released under the [MIT License](https://opensource.org/licenses/MIT).
-
