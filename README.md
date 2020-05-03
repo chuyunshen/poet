@@ -29,6 +29,7 @@ Users can like and save poems.
 Poems are queried from [PoetryDB](https://github.com/thundercomb/poetrydb#license).
 Poet images are queried from [MediaWiki](https://www.mediawiki.org/wiki/MediaWiki).
 
+TODO: Uses Browserify
 
 ## Table of contents
 

@@ -1,9 +1,9 @@
 const MAX_LINE = 40;
-const COLORS = ['#fbf1c7', '#94951A', '#D79921',
-    '#458588', '#B16286','#689D6A', '#D65D0E'];
+const COLORS = ['#fbf1c7', '#94951A', '#D79921', '#458588',
+    '#B16286', '#689D6A', '#D65D0E'];
 // '#cc241d'
 
-var url ="https://en.wikipedia.org/w/api.php";
+var url = 'https://en.wikipedia.org/w/api.php';
 
 var params = {
     action: "query",
@@ -12,7 +12,39 @@ var params = {
     format: "json",
     fomatversion: "2",
     piprop: "thumbnail",
-    pithumbsize: "600"
+    pithumbsize: "600",
+};
+
+function savePoem(author, title) {
+    chrome.storage.sync.get(['saved_poems'],
+    function(data) {
+        console.log(data['saved_poems']);
+        update(data['saved_poems']);
+    });
+
+    function update(array) {
+        if (typeof array === 'undefined') {
+            array = [];
+        }
+        array.push([author, title]);
+        chrome.storage.sync.set({"saved_poems":array}, function() {
+            console.log("added to list with new values");
+        });
+    }
+};
+
+function deletePoem(author, title) {
+    // chrome.storage.sync.get([author], function(result) {
+    //     chrome.storage.sync.set([auuthor], function() {
+    //         for (title of result)
+    //     })
+    // }
+};
+
+function getSavedPoems() {
+    chrome.storage.sync.get(['saved_poems'], function(result) {
+        console.log(result);
+    });
 };
 
 /* Helper for generating random integer
@@ -25,7 +57,10 @@ function getRandomInt(max) {
  */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
-    let response, json, author, title;
+    let response;
+    let json;
+    let author;
+    let title;
     let lineCount = 200;
     let errorOccured = true;
     while (lineCount > MAX_LINE || errorOccured) {
@@ -33,7 +68,8 @@ async function displayRandomPoem(authorToDisplay,
             // Get random author
             response = await fetch(
                 'http://poetrydb.org/author',
-                {mode: 'cors'});
+                { mode: 'cors' },
+            );
             json = await response.json();
             const authors = json.authors;
             author = authors[getRandomInt(authors.length)];
@@ -41,21 +77,22 @@ async function displayRandomPoem(authorToDisplay,
             // Get random title with given author
             response = await fetch(
                 `http://poetrydb.org/author/${author}/title`,
-                {mode: 'cors'})
+                { mode: 'cors' },
+            );
             const titles = await response.json();
             title = titles[getRandomInt(titles.length)].title;
 
             // Get random poem
             response = await fetch(
                 `http://poetrydb.org/title/${title}`,
-                {mode: 'cors'});
+                { mode: 'cors'},
+            );
             json = await response.json();
             console.log(json);
             lineCount = json[0].lines.length;
             console.log(lineCount);
             errorOccured = false;
-
-        } catch(error){
+        } catch (error) {
             console.log(error);
         }
     }
@@ -107,14 +144,14 @@ function organizePoemLayout(titleToDisplay,
 }
 
 function makePanel() {
-    let panel = document.createElement('div');
+    const panel = document.createElement('div');
     panel.classList.add("poem");
     panel.classList.add("panel");
     return panel;
 }
 
 function makeBox() {
-    let panel = document.createElement('div');
+    const panel = document.createElement('div');
     panel.classList.add("poem");
     panel.classList.add("box");
     return panel;
@@ -141,26 +178,27 @@ function unfillHeart() {
     heart.classList.add("far");
 }
 
+
 /* Fills the heart button and add the given poem to
  * favourited poems
  */
-function like(poemWrapper, favPoems) {
+function like(authorToDisplay, titleToDisplay) {
     fillHeart();
-    addPoemToFavs(poemWrapper, favPoems);
+    // TODO
+    const author = authorToDisplay.textContent;
+    const title = titleToDisplay.textContent;
+    savePoem(author, title);
+    getSavedPoems();
 }
 
 /* Unfills the heart button and remove the given poem from
  * favourited poems
  */
-function unlike(poemWrapper, favPoems) {
+function unlike(authorToDisplay, titleToDisplay) {
     unfillHeart();
-    removePoemFromFavs(poemWrapper, favPoems);
-}
-
-function addPoemToFavs(poemWrapper, favPoems) {
-}
-
-function removePoemFromFavs(poemWrapper, favPoems) {
+    let author = authorToDisplay.textContent;
+    let title = titleToDisplay.textContent;
+    deletePoem(author, title);
 }
 
 async function displayPoetImage(authorToDisplay, poemWrapper) {
@@ -214,13 +252,13 @@ function colorize() {
     const panels = Array.from(document.querySelectorAll('.panel'));
     const randInt = getRandomInt(panels.length);
 
-    position = getCoords(panels[randInt]);
+    const position = getCoords(panels[randInt]);
     const xLeft = position.left;
     const xRight = position.right;
     console.log(xLeft);
     console.log(xRight);
     console.log(randInt);
-    let randomColor = COLORS[getRandomInt(COLORS.length)];
+    const randomColor = COLORS[getRandomInt(COLORS.length)];
     // TODO: fix bug here
     const selectedColors = getRandomInt(1) == 0 ?
         ["white", randomColor] : [randomColor, "white"];
@@ -245,13 +283,13 @@ function colorize() {
 
 // TODO: fix this
 function getCoords(element) {
-  let box = element.getBoundingClientRect();
+    const box = element.getBoundingClientRect();
 
-  return {
-    top: box.top + window.pageYOffset,
-    left: box.left + window.pageXOffset,
-    right: box.right + window.pageXOffset
-  };
+    return {
+        top: box.top + window.pageYOffset,
+        left: box.left + window.pageXOffset,
+        right: box.right + window.pageXOffset,
+    };
 }
 
 async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
@@ -266,25 +304,25 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     }
 }
 
+
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';
 var authorToDisplay = document.createElement('h2');
 authorToDisplay.id = 'author';
-var favPoems = [];
 
 const poemWrapper = document.querySelector('#poem-wrapper');
 
-//execute displays in order
+// execute displays in order
 const displayFunctions = [displayRandomPoem, authorToDisplay];
 displayAll(authorToDisplay, titleToDisplay, poemWrapper);
 const heart = document.querySelector(".fa-heart");
 heart.addEventListener('click', () => {
-        if (heart.classList.contains("far")) {
-            like(poemWrapper, favPoems);
-        } else {
-            unlike(poemWrapper, favPoems);
-        }
-    });
+    if (heart.classList.contains("far")) {
+        like(authorToDisplay, titleToDisplay);
+    } else {
+        unlike(authorToDisplay, titleToDisplay);
+    }
+});
 
 const refresh = document.querySelector(".fa-redo-alt");
 refresh.addEventListener('click', () => {
@@ -292,4 +330,4 @@ refresh.addEventListener('click', () => {
     authorToDisplay.innerHTML = '';
     poemWrapper.innerHTML = '';
     displayAll(authorToDisplay, titleToDisplay, poemWrapper);
-})
+});

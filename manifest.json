@@ -5,8 +5,8 @@
     "description": "An extension that shows a poem every time a new tab is launched.",
     "manifest_version": 2,
     "chrome_url_overrides" : {  "newtab": "index.html"},
-    "permissions": ["activeTab"],
-    "page_action": {
+    "permissions": ["activeTab", "storage"],
+    "browser_action": {
         "default_popup":
         "popup.html",
         "default_icon":
@@ -23,5 +23,7 @@
         "32": "images/poet32.png",
         "48": "images/poet48.png",
         "128": "images/poet128.png"
-    }
+    },
+    "content_security_policy": "script-src 'self' https://kit.fontawesome.com; object-src 'self'"
+
 }
