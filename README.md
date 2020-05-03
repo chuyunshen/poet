@@ -4,7 +4,7 @@
 
 <h3 align="center">Poet</h3>
 <p align="center">
-A Chrome extension that displays a new poem every day upon new tab launches.
+A lightweight Chrome extension that displays a new poem every day upon new tab launches.
 <br>
 </p>
 <p align="center">

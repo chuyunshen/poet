@@ -1,4 +1,4 @@
-const MAX_LINE = 40
+const MAX_LINE = 40;
 const COLORS = ['#fbf1c7', '#94951A', '#D79921',
     '#458588', '#B16286','#689D6A', '#D65D0E'];
 // '#cc241d'
@@ -15,10 +15,14 @@ var params = {
     pithumbsize: "600"
 };
 
+/* Helper for generating random integer
+ */
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+/* Displays a random poem fetched from poetryDB.
+ */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
     let response, json, author, title;
@@ -65,7 +69,10 @@ async function displayRandomPoem(authorToDisplay,
         poemWrapper, lines);
 }
 
-// Split given poem into two panes if it's long
+/* Helper function to organize the layout.
+ * Split given poem into two panes if the poem is longer
+ * than MAX_LINE / 2 lines
+ */
 function organizePoemLayout(titleToDisplay,
     authorToDisplay, poemWrapper, lines) {
     lineCount = lines.length;
@@ -134,20 +141,26 @@ function unfillHeart() {
     heart.classList.add("far");
 }
 
-function like() {
+/* Fills the heart button and add the given poem to
+ * favourited poems
+ */
+function like(poemWrapper, favPoems) {
     fillHeart();
-    addPoemToFavs();
+    addPoemToFavs(poemWrapper, favPoems);
 }
 
-function unlike() {
+/* Unfills the heart button and remove the given poem from
+ * favourited poems
+ */
+function unlike(poemWrapper, favPoems) {
     unfillHeart();
-    removePoemFromFavs();
+    removePoemFromFavs(poemWrapper, favPoems);
 }
 
-function addPoemToFavs(poemToDisplay, favPoems) {
+function addPoemToFavs(poemWrapper, favPoems) {
 }
 
-function removePoemFromFavs(poemToDisplay, favPoems) {
+function removePoemFromFavs(poemWrapper, favPoems) {
 }
 
 async function displayPoetImage(authorToDisplay, poemWrapper) {
@@ -208,12 +221,11 @@ function colorize() {
     console.log(xRight);
     console.log(randInt);
     let randomColor = COLORS[getRandomInt(COLORS.length)];
-    let selectedColors;
-    if (getRandomInt(1)){
-        selectedColors = ["white", randomColor];
-    } else {
-        selectedColors = [randomColor, "white"];
-    }
+    // TODO: fix bug here
+    const selectedColors = getRandomInt(1) == 0 ?
+        ["white", randomColor] : [randomColor, "white"];
+    console.log(selectedColors);
+
     if (randInt == 0) {
         body.style.background =`linear-gradient(90deg,
             ${selectedColors[0]} ${xRight}px,
@@ -253,9 +265,6 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
         }
     }
 }
-
-// const titleToDisplay = document.querySelector('#title');
-// var authorToDisplay = document.querySelector('#author');
 
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';

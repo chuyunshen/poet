@@ -1,9 +1,10 @@
 {
     "name": "Poet",
     "version": "1.0",
+    "author": "Chuyun Shen",
     "description": "An extension that shows a poem every time a new tab is launched.",
     "manifest_version": 2,
-    "chrome_url_overrides" : {  "newtab": "newtab.html"},
+    "chrome_url_overrides" : {  "newtab": "index.html"},
     "permissions": ["activeTab"],
     "page_action": {
         "default_popup":
