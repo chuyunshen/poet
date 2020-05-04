@@ -1,4 +1,5 @@
-const MAX_LINE = 40;
+//TODO: use today's date as a key in chrome storage
+const MAX_LINE = 30;
 const COLORS = ['#fbf1c7', '#94951A', '#D79921', '#458588',
     '#B16286', '#689D6A', '#D65D0E'];
 // '#cc241d'
@@ -44,7 +45,7 @@ function deletePoem(author, title) {
 /* Helper for generating random integer
  */
 function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
+    return Math.floor(Math.random() * max);
 }
 
 /* Displays a random poem fetched from poetryDB.
@@ -178,7 +179,6 @@ function unfillHeart() {
  */
 function like(authorToDisplay, titleToDisplay) {
     fillHeart();
-    // TODO
     const author = authorToDisplay.textContent;
     const title = titleToDisplay.textContent;
     savePoem(author, title);
@@ -226,9 +226,9 @@ async function displayPoetImage(authorToDisplay, poemWrapper) {
                 poemWrapper.lastChild.appendChild(image);
             }
             // randomize horizontal position
-            image.style.cssFloat = getRandomInt(1) ? "left" : "right";
+            image.style.cssFloat = getRandomInt(2) ? "left" : "right";
             // randomize vertical position
-            if (getRandomInt(1)) {
+            if (getRandomInt(2)) {
                 image.style.position = "absolute";
                 image.style.bottom = "0";
             }
@@ -252,8 +252,7 @@ function colorize() {
     console.log(xRight);
     console.log(randInt);
     const randomColor = COLORS[getRandomInt(COLORS.length)];
-    // TODO: fix bug here
-    const selectedColors = getRandomInt(1) == 0 ?
+    const selectedColors = getRandomInt(2) ?
         ["white", randomColor] : [randomColor, "white"];
     console.log(selectedColors);
 

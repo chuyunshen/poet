@@ -4,23 +4,19 @@ html {
 
 #popup {
     width: 400px;
-    height: 500px;
-    border-width:1px;
-    border-style: solid;
-    border-color: lightgrey;
-    border-radius: 2%;
+    height: 400px;
     overflow-y: scroll;
+    font-family: 'Noto Serif JP', serif;
 }
 
 input {
     border-radius: 25px;
     margin-top: 30px;
-    width: 80%;
+    width: 90%;
     height: 30px;
     border-color: #f2f2f2;
     border-style: solid;
     font-size: 16px;
-    font-family: 'Noto Serif JP', serif;
     margin: 30px 0 auto 25px;
     padding-left: 10px;
     padding-right: 10px;
@@ -54,11 +50,7 @@ input:focus {
     display: block;
     width: 80%;
     margin: 10px auto;
-    font-family: 'Noto Serif JP', serif;
 
-}
-
-.thumbnail:hover {
 }
 
 .title {
@@ -78,4 +70,75 @@ input:focus {
     color: grey;
 }
 
+#nav {
+    width: 400px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.nav-button {
+    width: 2em;
+    height: 30px;
+    margin: auto;
+}
+
+.fa-heart {
+    font-size: 2em;
+    color: #cc241d;
+}
+
+.fa-comment-dots {
+    font-size: 2em;
+    color: grey;
+}
+
+.fa-heart, .fa-comment-dots, .fa-arrow-left:hover {
+    cursor: pointer;
+}
+
+.delete-button {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.fa-trash-alt {
+    font-size: 2em;
+    color: lightgrey;
+}
+
+.poem-detail-author {
+    font-size: 12px;
+    padding: 5px;
+    text-align: center;
+    font-style: italic;
+}
+.poem-detail-title {
+    display: block;
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.poem-detail-lines {
+    display: block;
+    white-space:pre-wrap;
+    padding: 5px;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.report {
+    margin-top: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
