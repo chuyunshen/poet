@@ -9,6 +9,7 @@ html {
     border-style: solid;
     border-color: lightgrey;
     border-radius: 2%;
+    overflow-y: scroll;
 }
 
 input {
@@ -45,7 +46,7 @@ input:focus {
     display: block;
 }
 
-.poem {
+.thumbnail {
     border-color: lightgrey;
     border-style: solid;
     border-width: 1px;
@@ -53,13 +54,18 @@ input:focus {
     display: block;
     width: 80%;
     margin: 10px auto;
+    font-family: 'Noto Serif JP', serif;
 
+}
+
+.thumbnail:hover {
 }
 
 .title {
     display: block;
     padding: 20px;
-    font-size: 16px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .author {
@@ -68,6 +74,8 @@ input:focus {
     right: 30px;
     position: relative;
     bottom: 10px;
+    font-style: italic;
+    color: grey;
 }
 
 

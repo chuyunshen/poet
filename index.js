@@ -18,7 +18,6 @@ var params = {
 function savePoem(author, title) {
     chrome.storage.sync.get(['saved_poems'],
     function(data) {
-        console.log(data['saved_poems']);
         update(data['saved_poems']);
     });
 
@@ -41,11 +40,6 @@ function deletePoem(author, title) {
     // }
 };
 
-function getSavedPoems() {
-    chrome.storage.sync.get(['saved_poems'], function(result) {
-        console.log(result);
-    });
-};
 
 /* Helper for generating random integer
  */
@@ -188,7 +182,6 @@ function like(authorToDisplay, titleToDisplay) {
     const author = authorToDisplay.textContent;
     const title = titleToDisplay.textContent;
     savePoem(author, title);
-    getSavedPoems();
 }
 
 /* Unfills the heart button and remove the given poem from
