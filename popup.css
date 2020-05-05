@@ -94,7 +94,7 @@ input:focus {
     color: grey;
 }
 
-.fa-heart, .fa-comment-dots, .fa-arrow-left:hover {
+.fa:hover {
     cursor: pointer;
 }
 

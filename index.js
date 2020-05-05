@@ -1,8 +1,9 @@
 //TODO: use today's date as a key in chrome storage
+import {savePoem, deletePoem} from './storage.js';
+import {appendLineBreaks} from './utils.js'
 const MAX_LINE = 30;
 const COLORS = ['#fbf1c7', '#94951A', '#D79921', '#458588',
     '#B16286', '#689D6A', '#D65D0E'];
-// '#cc241d'
 
 var url = 'https://en.wikipedia.org/w/api.php';
 
@@ -14,31 +15,6 @@ var params = {
     fomatversion: "2",
     piprop: "thumbnail",
     pithumbsize: "600",
-};
-
-function savePoem(author, title) {
-    chrome.storage.sync.get(['saved_poems'],
-    function(data) {
-        update(data['saved_poems']);
-    });
-
-    function update(array) {
-        if (typeof array === 'undefined') {
-            array = [];
-        }
-        array.push([author, title]);
-        chrome.storage.sync.set({"saved_poems":array}, function() {
-            console.log("added to list with new values");
-        });
-    }
-};
-
-function deletePoem(author, title) {
-    // chrome.storage.sync.get([author], function(result) {
-    //     chrome.storage.sync.set([auuthor], function() {
-    //         for (title of result)
-    //     })
-    // }
 };
 
 
@@ -107,7 +83,7 @@ async function displayRandomPoem(authorToDisplay,
  */
 function organizePoemLayout(titleToDisplay,
     authorToDisplay, poemWrapper, lines) {
-    lineCount = lines.length;
+    const lineCount = lines.length;
 
     // console.log(window.innerWidth);
     // console.log(window.innerHeight);
@@ -117,8 +93,8 @@ function organizePoemLayout(titleToDisplay,
         let rightPanel = makePanel();
         leftPanel.appendChild(titleToDisplay);
         leftPanel.appendChild(authorToDisplay);
-        leftLines = lines.slice(0, MAX_LINE / 2);
-        rightLines = lines.slice(MAX_LINE / 2, lineCount);
+        const leftLines = lines.slice(0, MAX_LINE / 2);
+        const rightLines = lines.slice(MAX_LINE / 2, lineCount);
         let leftText = makeBox();
         let rightText = makeBox();
         leftText.textContent = appendLineBreaks(leftLines);
@@ -150,15 +126,6 @@ function makeBox() {
     panel.classList.add("poem");
     panel.classList.add("box");
     return panel;
-}
-
-function appendLineBreaks(lines) {
-    let poem = "";
-    for (line of lines) {
-        poem = poem.concat(line);
-        poem = poem.concat("\n");
-    }
-    return poem;
 }
 
 function fillHeart() {
@@ -285,17 +252,11 @@ function getCoords(element) {
 }
 
 async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
-    for (displayFunction of displayFunctions) {
-        if (displayFunction == displayRandomPoem) {
-            await displayRandomPoem(authorToDisplay, titleToDisplay,
+        await displayRandomPoem(authorToDisplay, titleToDisplay,
                 poemWrapper);
-        } else {
-            await displayPoetImage(authorToDisplay, poemWrapper);
+        await displayPoetImage(authorToDisplay, poemWrapper);
             colorize();
-        }
-    }
 }
-
 
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';
@@ -305,7 +266,6 @@ authorToDisplay.id = 'author';
 const poemWrapper = document.querySelector('#poem-wrapper');
 
 // execute displays in order
-const displayFunctions = [displayRandomPoem, authorToDisplay];
 displayAll(authorToDisplay, titleToDisplay, poemWrapper);
 const heart = document.querySelector(".fa-heart");
 heart.addEventListener('click', () => {

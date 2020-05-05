@@ -1,3 +1,5 @@
+import {deletePoem} from './storage.js';
+import {appendLineBreaks} from './utils.js'
 function displaySavedPoems() {
     return new Promise ((resolve, reject) => {
         chrome.storage.sync.get(['saved_poems'], function(result) {
@@ -11,7 +13,7 @@ function displaySavedPoems() {
 
 function renderSavedPoems(poem_list) {
     //TODO: Sort the poems based on date saved.
-    for (poem of poem_list) {
+    for (const poem of poem_list) {
         let popup = document.querySelector('#popup');
         let thumbnail = document.createElement('div');
         thumbnail.classList.add('thumbnail');
@@ -30,19 +32,17 @@ function renderSavedPoems(poem_list) {
 async function displayPoem(author, title) {
     let lines;
     try {
-        response = await fetch(
+        const response = await fetch(
             `http://poetrydb.org/title/${title}`,
             { mode: 'cors'},
         );
-        json = await response.json();
-        console.log(json);
-        lineCount = json[0].lines.length;
+        const json = await response.json();
+        const lineCount = json[0].lines.length;
         console.log(lineCount);
         lines = json[0].lines;
     } catch (error) {
         console.log(error);
-        lines = `An error occured.
-            Please check your Internet connection.`
+        lines = "An error occured. Please check your Internet connection."
     }
     organizePoemLayout(author, title, lines);
 }
@@ -70,15 +70,6 @@ function organizePoemLayout(author, title, lines) {
     popup.appendChild(deleteButton);
 }
 
-/* TODO: refactor this into utils */
-function appendLineBreaks(lines) {
-    let poem = "";
-    for (line of lines) {
-        poem = poem.concat(line);
-        poem = poem.concat("\n");
-    }
-    return poem;
-}
 
 async function displaySavedPoemsAndListen() {
     let popup = document.querySelector('#popup');
@@ -90,10 +81,12 @@ async function displaySavedPoemsAndListen() {
         thumbnail.addEventListener('click', async () => {
             const title = thumbnail.children[0].innerText;
             const author = thumbnail.children[1].innerText;
-            displayPoem(author, title);
+            await displayPoem(author, title);
+            listenToDeletePoem(author, title);
         });
     });
 }
+
 
 function displayContact() {
     let popup = document.querySelector('#popup');
@@ -134,6 +127,22 @@ function uncolorHeart() {
     heart.style.color = 'grey';
 }
 
+function listenToDeletePoem(author, title) {
+    const trash = document.querySelector('.fa-trash-alt');
+    if (trash) {
+        console.log("trying to delete now");
+        trash.addEventListener('click', () => {
+            deletePoem(author, title);
+            showDeletedMessage();
+        });
+    }
+}
+
+function showDeletedMessage() {
+    const trash = document.querySelector('.fa-trash-alt');
+    trash.textContent = 'Deleted';
+}
+
 displaySavedPoemsAndListen();
 const heart = document.querySelector('.fa-heart');
 heart.addEventListener('click', () => {
@@ -141,6 +150,7 @@ heart.addEventListener('click', () => {
     colorHeart();
     uncolorBubble();
 });
+
 const bubble = document.querySelector('.fa-comment-dots');
 bubble.addEventListener('click', () => {
     displayContact();
