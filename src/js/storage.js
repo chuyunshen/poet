@@ -1,6 +1,6 @@
 import {getTodayDate} from './utils.js'
 
-/* Checks if a poem is already liked
+/* Returns true if a poem is already liked. False, otherwise.
  */
 export function isAlreadySaved(author, title) {
     return new Promise ((resolve, reject) => {
@@ -16,6 +16,8 @@ export function isAlreadySaved(author, title) {
     })
 }
 
+/* Returns a promise with saved poems.
+ */
 export function getSavedPoems() {
     return new Promise ((resolve, reject) => {
         chrome.storage.sync.get(['saved_poems'], function(result) {
@@ -24,6 +26,8 @@ export function getSavedPoems() {
     })
 };
 
+/* Saves a given poem to Chrome storage.
+ */
 export function savePoem(author, title) {
     chrome.storage.sync.get(['saved_poems'],
         function(data) {
@@ -42,6 +46,8 @@ export function savePoem(author, title) {
     }
 };
 
+/* Returns the lastest date when a "today" poem is saved.
+ */
 export function getLatestDate() {
     return new Promise((resolve, reject) => {
 
@@ -57,6 +63,8 @@ export function getLatestDate() {
     });
 };
 
+/* Returns today's poem.
+ */
 export function getTodayPoem() {
     return new Promise((resolve, reject) => {
         chrome.storage.sync.get(['today'],
@@ -66,6 +74,8 @@ export function getTodayPoem() {
     });
 };
 
+/* Clears today's poem. A helper for testing.
+ */
 export function clearTodayPoem() {
     return new Promise((resolve, reject) => {
 
@@ -84,6 +94,8 @@ export function clearTodayPoem() {
     });
 };
 
+/* Saves today's poem in Chrome storage.
+ */
 export function setTodayPoem(author, title, lines) {
     chrome.storage.sync.get(['today'],
         function(data) {
@@ -103,7 +115,8 @@ export function setTodayPoem(author, title, lines) {
     }
 };
 
-
+/* Deletes a poem from saved poems.
+ */
 export function deletePoem(author, title) {
     chrome.storage.sync.get(['saved_poems'],
         function(data) {
@@ -127,4 +140,3 @@ export function deletePoem(author, title) {
         });
     }
 };
-
