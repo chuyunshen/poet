@@ -93,17 +93,20 @@ function displayContact() {
     const heart = document.querySelector('.fa-heart');
     heart.style.color = 'grey';
     popup.innerHTML = '';
-    const report = document.createElement('div');
-    report.classList.add('report');
+
+    const contactBox = document.createElement('div');
+    contactBox.classList.add('contact-box');
     const reportText = document.createElement('a');
     reportText.textContent = 'Report a bug';
-    reportText.href = 'https://www.google.com';
-    report.appendChild(reportText);
+    reportText.href = 'https://github.com/chuyunshen/poet';
+    reportText.target = '_blank';
+    contactBox.appendChild(reportText);
     const emailText = document.createElement('a');
     emailText.textContent = 'Contact me';
     emailText.href = 'mailto:chuyunshen123@gmail.com';
-    report.appendChild(emailText);
-    popup.appendChild(report);
+    emailText.target = '_blank';
+    contactBox.appendChild(emailText);
+    popup.appendChild(contactBox);
     const bubble = document.querySelector('.fa-comment-dots');
 }
 

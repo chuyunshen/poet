@@ -1,9 +1,14 @@
 //TODO: use today's date as a key in chrome storage
-import {savePoem, deletePoem} from './storage.js';
-import {appendLineBreaks} from './utils.js'
+//TODO: fix the problem where when re-ajusting
+//the window messes up the colour block layout
+//TODO: dark mode setup in settings
+//TODO: add feature to set favourite colors in settings-color wheel, or
+//different sets of colours
+import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem, clearTodayPoem} from './storage.js';
+import {appendLineBreaks, getTodayDate} from './utils.js'
 const MAX_LINE = 30;
-const COLORS = ['#fbf1c7', '#94951A', '#D79921', '#458588',
-    '#B16286', '#689D6A', '#D65D0E'];
+const COLORS = ['#b8bb26', '#fabd2f', '#83a598', '#d3869b', '#8ec07c',
+    '#fbf1c7'];
 
 var url = 'https://en.wikipedia.org/w/api.php';
 
@@ -28,53 +33,51 @@ function getRandomInt(max) {
  */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
-    let response;
-    let json;
-    let author;
-    let title;
-    let lineCount = 200;
-    let errorOccured = true;
-    while (lineCount > MAX_LINE || errorOccured) {
-        try {
-            // Get random author
-            response = await fetch(
-                'http://poetrydb.org/author',
-                { mode: 'cors' },
-            );
-            json = await response.json();
-            const authors = json.authors;
-            author = authors[getRandomInt(authors.length)];
+    return new Promise(async (resolve, reject) => {
+        let response, json, author, title;
+        let lineCount = 200;
+        let errorOccured = true;
+        while (lineCount > MAX_LINE || errorOccured) {
+            try {
+                // Get random author
+                response = await fetch(
+                    'http://poetrydb.org/author',
+                    { mode: 'cors' },
+                );
+                json = await response.json();
+                const authors = json.authors;
+                author = authors[getRandomInt(authors.length)];
 
-            // Get random title with given author
-            response = await fetch(
-                `http://poetrydb.org/author/${author}/title`,
-                { mode: 'cors' },
-            );
-            const titles = await response.json();
-            title = titles[getRandomInt(titles.length)].title;
+                // Get random title with given author
+                response = await fetch(
+                    `http://poetrydb.org/author/${author}/title`,
+                    { mode: 'cors' },
+                );
+                const titles = await response.json();
+                title = titles[getRandomInt(titles.length)].title;
 
-            // Get random poem
-            response = await fetch(
-                `http://poetrydb.org/title/${title}`,
-                { mode: 'cors'},
-            );
-            json = await response.json();
-            console.log(json);
-            lineCount = json[0].lines.length;
-            console.log(lineCount);
-            errorOccured = false;
-        } catch (error) {
-            console.log(error);
+                // Get random poem
+                response = await fetch(
+                    `http://poetrydb.org/title/${title}`,
+                    { mode: 'cors'},
+                );
+                json = await response.json();
+                lineCount = json[0].lines.length;
+                errorOccured = false;
+            } catch (error) {
+                console.log(error);
+            }
         }
-    }
-    const lines = json[0].lines;
+        const lines = json[0].lines;
 
-    // display
-    titleToDisplay.textContent = title;
-    authorToDisplay.textContent = author;
+        // display
+        titleToDisplay.textContent = title;
+        authorToDisplay.textContent = author;
 
-    organizePoemLayout(titleToDisplay, authorToDisplay,
-        poemWrapper, lines);
+        organizePoemLayout(titleToDisplay, authorToDisplay,
+            poemWrapper, lines);
+        resolve(lines);
+    });
 }
 
 /* Helper function to organize the layout.
@@ -85,9 +88,6 @@ function organizePoemLayout(titleToDisplay,
     authorToDisplay, poemWrapper, lines) {
     const lineCount = lines.length;
 
-    // console.log(window.innerWidth);
-    // console.log(window.innerHeight);
-    console.log(lineCount);
     if (lineCount > MAX_LINE / 2) {
         let leftPanel = makePanel();
         let rightPanel = makePanel();
@@ -164,27 +164,21 @@ function unlike(authorToDisplay, titleToDisplay) {
 async function displayPoetImage(authorToDisplay, poemWrapper) {
     let author = authorToDisplay.textContent;
     // Error will occur if there isn't a wiki photo for that author
-    console.log(author);
     params.titles = author;
     url = url + "?origin=*";
     Object.keys(params).forEach((key) => {
         url += "&" + key + "=" + params[key];});
 
-    console.log(url);
     let response;
     let json;
     try {
         response = await fetch(url);
         json = await response.json();
-        console.log(json);
         var pages = json.query.pages;
         for (var page in pages) {
-            console.log(pages[page].thumbnail.source);
             const imageUrl = pages[page].thumbnail.source;
             const image = document.createElement('img');
             image.src = imageUrl;
-            console.log(poemWrapper.lastChild);
-            console.log(getComputedStyle(poemWrapper.lastChild).height);
             if (parseInt(getComputedStyle(poemWrapper.lastChild).height) + 250 > 600) {
                 panel = makePanel();
                 panel.appendChild(image);
@@ -194,14 +188,9 @@ async function displayPoetImage(authorToDisplay, poemWrapper) {
             }
             // randomize horizontal position
             image.style.cssFloat = getRandomInt(2) ? "left" : "right";
-            // randomize vertical position
-            if (getRandomInt(2)) {
-                image.style.position = "absolute";
-                image.style.bottom = "0";
-            }
         }
     } catch(error) {
-        console.log(error);
+        console.log("No poet image is found.");
         return;
     }
 }
@@ -215,13 +204,9 @@ function colorize() {
     const position = getCoords(panels[randInt]);
     const xLeft = position.left;
     const xRight = position.right;
-    console.log(xLeft);
-    console.log(xRight);
-    console.log(randInt);
     const randomColor = COLORS[getRandomInt(COLORS.length)];
     const selectedColors = getRandomInt(2) ?
         ["white", randomColor] : [randomColor, "white"];
-    console.log(selectedColors);
 
     if (randInt == 0) {
         body.style.background =`linear-gradient(90deg,
@@ -240,22 +225,50 @@ function colorize() {
     }
 }
 
-// TODO: fix this
 function getCoords(element) {
     const box = element.getBoundingClientRect();
-
     return {
-        top: box.top + window.pageYOffset,
         left: box.left + window.pageXOffset,
         right: box.right + window.pageXOffset,
     };
 }
 
+function displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper,
+    todayPoem) {
+    authorToDisplay.textContent = todayPoem.author;
+    titleToDisplay.textContent = todayPoem.title;
+    organizePoemLayout(authorToDisplay, titleToDisplay, poemWrapper, todayPoem.lines);
+}
+
 async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
-        await displayRandomPoem(authorToDisplay, titleToDisplay,
-                poemWrapper);
-        await displayPoetImage(authorToDisplay, poemWrapper);
-            colorize();
+    // await clearTodayPoem();
+    const today = getTodayDate();
+    console.log(today);
+    const lastestDate = await getLatestDate();
+    console.log(lastestDate);
+    console.log(today == lastestDate);
+    if (today == lastestDate) {
+        // If there is already a poem from today saved, fetch it from
+        // Chrome storage
+        const todayPoem = await getTodayPoem();
+        console.log("printing today poem");
+        console.log(todayPoem);
+        displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper, todayPoem);
+    } else {
+        // otherwise, display a random poem and save it to today's poem in
+        // chrome storage.
+        let lines = await displayRandomPoem(authorToDisplay, titleToDisplay, poemWrapper);
+        await setTodayPoem(authorToDisplay.textContent, titleToDisplay.textContent, lines);
+    }
+    await displayPoetImage(authorToDisplay, poemWrapper);
+    colorize();
+}
+
+async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
+    let lines = await displayRandomPoem(authorToDisplay, titleToDisplay, poemWrapper);
+    await setTodayPoem(authorToDisplay.textContent, titleToDisplay.textContent, lines);
+    await displayPoetImage(authorToDisplay, poemWrapper);
+    colorize();
 }
 
 var titleToDisplay = document.createElement('h1');
@@ -265,7 +278,7 @@ authorToDisplay.id = 'author';
 
 const poemWrapper = document.querySelector('#poem-wrapper');
 
-// execute displays in order
+
 displayAll(authorToDisplay, titleToDisplay, poemWrapper);
 const heart = document.querySelector(".fa-heart");
 heart.addEventListener('click', () => {
@@ -281,5 +294,5 @@ refresh.addEventListener('click', () => {
     titleToDisplay.innerHTML = '';
     authorToDisplay.innerHTML = '';
     poemWrapper.innerHTML = '';
-    displayAll(authorToDisplay, titleToDisplay, poemWrapper);
+    displayRefresh(authorToDisplay, titleToDisplay, poemWrapper);
 });

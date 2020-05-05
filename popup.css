@@ -135,10 +135,21 @@ input:focus {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
-.report {
+.contact-box {
     margin-top: 20px;
     padding: 30px;
     display: flex;
     flex-direction: column;
     color: black;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+}
+
+a:link {
+    color: black;
+}
+
+a:visited {
+    color: #b16286;
 }
