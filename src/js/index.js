@@ -1,35 +1,11 @@
-//TODO: use today's date as a key in chrome storage
-//TODO: fix the problem where when re-ajusting
-//the window messes up the colour block layout
-//TODO: dark mode setup in settings
-//TODO: add feature to set favourite colors in settings-color wheel, or
-//different sets of colours
 import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem, clearTodayPoem} from './storage.js';
-import {appendLineBreaks, getTodayDate} from './utils.js'
-const MAX_LINE = 30;
-const COLORS = ['#b8bb26', '#fabd2f', '#83a598', '#d3869b', '#8ec07c',
-    '#fbf1c7'];
-
-var url = 'https://en.wikipedia.org/w/api.php';
-
-var params = {
-    action: "query",
-    prop: "pageimages|pageterms",
-    titles: "",
-    format: "json",
-    fomatversion: "2",
-    piprop: "thumbnail",
-    pithumbsize: "600",
-};
-
-
-/* Helper for generating random integer
- */
-function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-}
+import {appendLineBreaks, getTodayDate, getRandomInt} from './utils.js';
+import {MAX_LINE, COLORS} from './config.js';
 
 /* Displays a random poem fetched from poetryDB.
+ * If the poem is longer than the max number of lines defined in config.js,
+ * the function requeries.
+ * Returns a promise along with the poem lines.
  */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
@@ -73,7 +49,6 @@ async function displayRandomPoem(authorToDisplay,
         // display
         titleToDisplay.textContent = title;
         authorToDisplay.textContent = author;
-
         organizePoemLayout(titleToDisplay, authorToDisplay,
             poemWrapper, lines);
         resolve(lines);
@@ -81,7 +56,7 @@ async function displayRandomPoem(authorToDisplay,
 }
 
 /* Helper function to organize the layout.
- * Split given poem into two panes if the poem is longer
+ * Split given poem into two panels if the poem is longer
  * than MAX_LINE / 2 lines
  */
 function organizePoemLayout(titleToDisplay,
@@ -91,6 +66,7 @@ function organizePoemLayout(titleToDisplay,
     if (lineCount > MAX_LINE / 2) {
         let leftPanel = makePanel();
         let rightPanel = makePanel();
+        // Left panel will have title and author appended.
         leftPanel.appendChild(titleToDisplay);
         leftPanel.appendChild(authorToDisplay);
         const leftLines = lines.slice(0, MAX_LINE / 2);
@@ -141,8 +117,7 @@ function unfillHeart() {
 }
 
 
-/* Fills the heart button and add the given poem to
- * favourited poems
+/* Fills the heart button and save the poem to Chrome storage.
  */
 function like(authorToDisplay, titleToDisplay) {
     fillHeart();
@@ -152,7 +127,7 @@ function like(authorToDisplay, titleToDisplay) {
 }
 
 /* Unfills the heart button and remove the given poem from
- * favourited poems
+ * saved poems in Chrome storage.
  */
 function unlike(authorToDisplay, titleToDisplay) {
     unfillHeart();
@@ -161,9 +136,23 @@ function unlike(authorToDisplay, titleToDisplay) {
     deletePoem(author, title);
 }
 
+/* Queries the profile image of a given author's Wikipedia page and
+ * displays it after the poem. No poet image will be displayed if the
+ * wiki image cannot be found.
+ */
 async function displayPoetImage(authorToDisplay, poemWrapper) {
     let author = authorToDisplay.textContent;
     // Error will occur if there isn't a wiki photo for that author
+    let url = 'https://en.wikipedia.org/w/api.php';
+    let params = {
+        action: "query",
+        prop: "pageimages|pageterms",
+        titles: "",
+        format: "json",
+        fomatversion: "2",
+        piprop: "thumbnail",
+        pithumbsize: "600",
+    };
     params.titles = author;
     url = url + "?origin=*";
     Object.keys(params).forEach((key) => {
@@ -195,12 +184,12 @@ async function displayPoetImage(authorToDisplay, poemWrapper) {
     }
 }
 
-// Randomly colourize one of the panels
+/* Randomly colour the panels with colours from config.js.
+ */
 function colorize() {
     const body = document.querySelector('body');
     const panels = Array.from(document.querySelectorAll('.panel'));
     const randInt = getRandomInt(panels.length);
-
     const position = getCoords(panels[randInt]);
     const xLeft = position.left;
     const xRight = position.right;
@@ -225,6 +214,8 @@ function colorize() {
     }
 }
 
+/* Returns an object of the elemnt's coordinates.
+ */
 function getCoords(element) {
     const box = element.getBoundingClientRect();
     return {
@@ -233,6 +224,8 @@ function getCoords(element) {
     };
 }
 
+/* Displays the given poem.
+ */
 function displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper,
     todayPoem) {
     authorToDisplay.textContent = todayPoem.author;
@@ -240,6 +233,10 @@ function displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper,
     organizePoemLayout(authorToDisplay, titleToDisplay, poemWrapper, todayPoem.lines);
 }
 
+/* This function first checks if there is a poem saved for today, if yes,
+ * display today's poem. Otherwise, display a random poem.
+ * Then the poet's image will be displayed and the page will be coloured.
+ */
 async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     // await clearTodayPoem();
     const today = getTodayDate();
@@ -264,7 +261,13 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     colorize();
 }
 
+/* Displays a new poem and its corresponding poet image in the case when
+ * the refresh button is pressed.
+ */
 async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
+    titleToDisplay.innerHTML = '';
+    authorToDisplay.innerHTML = '';
+    poemWrapper.innerHTML = '';
     let lines = await displayRandomPoem(authorToDisplay, titleToDisplay, poemWrapper);
     await setTodayPoem(authorToDisplay.textContent, titleToDisplay.textContent, lines);
     await displayPoetImage(authorToDisplay, poemWrapper);
@@ -278,7 +281,6 @@ authorToDisplay.id = 'author';
 
 const poemWrapper = document.querySelector('#poem-wrapper');
 
-
 displayAll(authorToDisplay, titleToDisplay, poemWrapper);
 const heart = document.querySelector(".fa-heart");
 heart.addEventListener('click', () => {
@@ -291,8 +293,5 @@ heart.addEventListener('click', () => {
 
 const refresh = document.querySelector(".fa-redo-alt");
 refresh.addEventListener('click', () => {
-    titleToDisplay.innerHTML = '';
-    authorToDisplay.innerHTML = '';
-    poemWrapper.innerHTML = '';
     displayRefresh(authorToDisplay, titleToDisplay, poemWrapper);
 });
