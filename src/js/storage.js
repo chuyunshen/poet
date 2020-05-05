@@ -1,5 +1,19 @@
 import {getTodayDate} from './utils.js'
-// TODO: check if a poem is already liked
+
+/* Checks if a poem is already liked
+ */
+export function isAlreadySaved(author, title) {
+
+}
+
+export function getSavedPoems() {
+    return new Promise ((resolve, reject) => {
+        chrome.storage.sync.get(['saved_poems'], function(result) {
+            resolve(result['saved_poems']);
+        });
+    })
+};
+
 export function savePoem(author, title) {
     chrome.storage.sync.get(['saved_poems'],
         function(data) {

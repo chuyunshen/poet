@@ -5,4 +5,7 @@ export const COLORS2 = ['#8D5A97', '#907F9F', '#A4A5AE', '#B0C7BD', '#B8EBD0'];
 export const COLORS3 = ['#A9DDD6', '#A3D1D1', '#9DC5CC', '#91ADC2', '#9BA0BC', '#C1B8C8'];
 export const COLORS4 = ['#AAFAC8', '#C7FFED', '#BBC8CA', '#C9CBCA', '#D7CDCA', '#F2D1C9'];
 export const COLORS5 = ['#BDD9BF', '#DED18B', '#FFC857', '#FFE4AB', '#FFF2D5', '#FFF9EA'];
-export const COLORS5 = ['#FCAA67', '#DF9E96', '#FFFFC7', '#A2CFCF', '#C8BEC0', '#B0F2B4'];
+export const COLORS6 = ['#FCAA67', '#DF9E96', '#FFFFC7', '#A2CFCF', '#C8BEC0', '#B0F2B4'];
+
+// Default max number of lines of poems
+export const MAX_LINE= 30;

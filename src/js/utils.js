@@ -1,3 +1,4 @@
+/* Appends line breaks at the end of each line of the poem body. */
 export function appendLineBreaks(lines) {
     let poem = "";
     for (const line of lines) {
@@ -7,6 +8,8 @@ export function appendLineBreaks(lines) {
     return poem;
 }
 
+/* Returns today's date.
+ */
 export function getTodayDate() {
     let today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -15,3 +18,10 @@ export function getTodayDate() {
     today = mm + '/' + dd + '/' + yyyy;
     return today;
 }
+
+/* Helper for generating random integer.
+ */
+export function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+

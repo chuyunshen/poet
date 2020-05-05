@@ -1,34 +1,31 @@
-import {deletePoem} from './storage.js';
+import {deletePoem, getSavedPoems} from './storage.js';
 import {appendLineBreaks} from './utils.js'
-function displaySavedPoems() {
-    return new Promise ((resolve, reject) => {
-        chrome.storage.sync.get(['saved_poems'], function(result) {
-            console.log(result);
-            renderSavedPoems(result['saved_poems']);
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            resolve(result);
-        });
-    })
+
+/* Displays all the saved poems.
+ */
+async function displaySavedPoems() {
+    return new Promise (async (resolve, reject) => {
+        const poemList = await getSavedPoems();
+        for (const poem of poemList) {
+            let popup = document.querySelector('#popup');
+            let thumbnail = document.createElement('div');
+            thumbnail.classList.add('thumbnail');
+            let title = document.createElement('div');
+            title.classList.add('title');
+            let author = document.createElement('div');
+            author.classList.add('author');
+            title.textContent = poem[1];
+            author.textContent = poem[0];
+            thumbnail.appendChild(title);
+            thumbnail.appendChild(author);
+            popup.appendChild(thumbnail);
+        }
+        resolve();
+    });
 };
 
-function renderSavedPoems(poem_list) {
-    //TODO: Sort the poems based on date saved.
-    for (const poem of poem_list) {
-        let popup = document.querySelector('#popup');
-        let thumbnail = document.createElement('div');
-        thumbnail.classList.add('thumbnail');
-        let title = document.createElement('div');
-        title.classList.add('title');
-        let author = document.createElement('div');
-        author.classList.add('author');
-        title.textContent = poem[1];
-        author.textContent = poem[0];
-        thumbnail.appendChild(title);
-        thumbnail.appendChild(author);
-        popup.appendChild(thumbnail);
-    }
-}
-
+/* Displays a single poem with given author and title, queried from poetryDB.
+ */
 async function displayPoem(author, title) {
     let lines;
     try {
@@ -47,6 +44,8 @@ async function displayPoem(author, title) {
     organizePoemLayout(author, title, lines);
 }
 
+/* Organizes the layout of a single saved poem.
+ */
 function organizePoemLayout(author, title, lines) {
     const popup = document.querySelector('#popup');
     popup.innerHTML = '';
@@ -70,7 +69,11 @@ function organizePoemLayout(author, title, lines) {
     popup.appendChild(deleteButton);
 }
 
-
+/* Displays all the saved poems and listen for thumbnail clicks.
+ * If a poem's thumbnail is clicked, the given poem will be displayed.
+ * In the single poem view, if the trash can button is clicked, the
+ * poem will be removed from saved poems.
+ */
 async function displaySavedPoemsAndListen() {
     let popup = document.querySelector('#popup');
     popup.innerHTML = '';
@@ -87,7 +90,8 @@ async function displaySavedPoemsAndListen() {
     });
 }
 
-
+/* Displays contact information.
+ */
 function displayContact() {
     let popup = document.querySelector('#popup');
     const heart = document.querySelector('.fa-heart');
@@ -130,6 +134,9 @@ function uncolorHeart() {
     heart.style.color = 'grey';
 }
 
+/* If the trash can button is clicked, the poem will be removed
+ * from the saved poems.
+ */
 function listenToDeletePoem(author, title) {
     const trash = document.querySelector('.fa-trash-alt');
     if (trash) {
@@ -141,6 +148,8 @@ function listenToDeletePoem(author, title) {
     }
 }
 
+/* Displays "deleted" if the delete button is clicked.
+ */
 function showDeletedMessage() {
     const trash = document.querySelector('.fa-trash-alt');
     trash.textContent = 'Deleted';
