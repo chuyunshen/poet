@@ -3,7 +3,17 @@ import {getTodayDate} from './utils.js'
 /* Checks if a poem is already liked
  */
 export function isAlreadySaved(author, title) {
-
+    return new Promise ((resolve, reject) => {
+        chrome.storage.sync.get(['saved_poems'], function(result) {
+            for (let pair of result['saved_poems']) {
+                if (pair[0] == author && pair[1] == title) {
+                    resolve(true);
+                    return;
+                }
+            }
+            resolve(false);
+        });
+    })
 }
 
 export function getSavedPoems() {

@@ -1,4 +1,5 @@
-import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem, clearTodayPoem} from './storage.js';
+import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem,
+    clearTodayPoem, isAlreadySaved} from './storage.js';
 import {appendLineBreaks, getTodayDate, getRandomInt} from './utils.js';
 import {MAX_LINE, COLORS} from './config.js';
 
@@ -259,6 +260,11 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     }
     await displayPoetImage(authorToDisplay, poemWrapper);
     colorize();
+    // If a poem is already saved, turn the heart red.
+    const isSaved = await isAlreadySaved(authorToDisplay.textContent, title.textContent);
+    if (isSaved) {
+        fillHeart();
+    }
 }
 
 /* Displays a new poem and its corresponding poet image in the case when
