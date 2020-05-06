@@ -261,11 +261,21 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     await displayPoetImage(authorToDisplay, poemWrapper);
     colorize();
     // If a poem is already saved, turn the heart red.
-    const isSaved = await isAlreadySaved(authorToDisplay.textContent, title.textContent);
+    setHeartColor(authorToDisplay.textContent, titleToDisplay.textContent);
+}
+
+/* Sets the heart to unfilled or filled depending on if the poem has been
+ * saved.
+ */
+async function setHeartColor(author, title) {
+    const isSaved = await isAlreadySaved(author, title);
     if (isSaved) {
         fillHeart();
+    } else {
+        unfillHeart();
     }
 }
+
 
 /* Displays a new poem and its corresponding poet image in the case when
  * the refresh button is pressed.
@@ -278,6 +288,7 @@ async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
     await setTodayPoem(authorToDisplay.textContent, titleToDisplay.textContent, lines);
     await displayPoetImage(authorToDisplay, poemWrapper);
     colorize();
+    setHeartColor(authorToDisplay.textContent, titleToDisplay.textContent);
 }
 
 var titleToDisplay = document.createElement('h1');
