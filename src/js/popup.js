@@ -116,7 +116,7 @@ function displayContact() {
 
 function colorBubble() {
     const bubble = document.querySelector('.fa-comment-dots');
-    bubble.style.color = '#458588';
+    bubble.style.color = '#455C7B';
 }
 
 function uncolorBubble() {
