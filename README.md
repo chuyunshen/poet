@@ -13,14 +13,17 @@ Download Poet from the Chrome extension web store at [insert link here].
 ## Demonstration
 <p align="center">
 Displays a new poem every day.
+<br>
 <img src="https://imgur.com/7TCxx9G.jpg" alt="A poem a day" height="400px">
 </p>
+<br>
 
 <p align="center">
 Add poems to your favourites.
 <br>
 <img src="https://imgur.com/0yBREZ0.gif" alt="Like poem" height="400px">
 </p>
+<br>
 
 <p align="center">
 View and manage your saved poems.
@@ -28,6 +31,7 @@ View and manage your saved poems.
 <img src="https://imgur.com/c3tUqx4.gif" alt="Manage poems" height="400px">
 <br>
 </p>
+<br>
 
 <p align="center">
 Refresh for a new poem.
