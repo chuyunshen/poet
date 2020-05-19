@@ -8,7 +8,7 @@ A lightweight Chrome extension that displays a new poem every day upon new tab l
 </p>
 
 ## Installation
-Download Poet from the Chrome extension web store at [insert link here].
+Download Poet from the <a href="https://chrome.google.com/webstore/detail/poet/hkjjflfleaejocakemkheofjcmkepbcm"> Chrome extension web store.
 
 ## Demonstration
 <p align="center">
