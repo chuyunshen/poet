@@ -1,11 +1,28 @@
 import {deletePoem, getSavedPoems} from './storage.js';
 import {appendLineBreaks} from './utils.js'
 
+const WELCOME_MESSAGE = `Heigh!
+
+Thank you for installing Poet.
+
+With Poet, you will be shown a different poem every day.
+
+You can use the grey refresh button at the bottom right of the tab to fetch a different poem.
+
+And the heart button to save a poem to your favourites!`
+
 /* Displays all the saved poems.
  */
 async function displaySavedPoems() {
-    return new Promise (async (resolve, reject) => {
+    return new Promise (async (resolve) => {
         const poemList = await getSavedPoems();
+        if (!poemList.length) {
+            const popup = document.querySelector('#popup');
+            let welcomeMessage = document.createElement('div');
+            welcomeMessage.id = 'welcome';
+            welcomeMessage.textContent = WELCOME_MESSAGE;
+            popup.appendChild(welcomeMessage);
+        }
         for (const poem of poemList) {
             let popup = document.querySelector('#popup');
             let thumbnail = document.createElement('div');
@@ -19,7 +36,7 @@ async function displaySavedPoems() {
             thumbnail.appendChild(title);
             thumbnail.appendChild(author);
             popup.appendChild(thumbnail);
-        }
+            }
         resolve();
     });
 };
@@ -35,10 +52,9 @@ async function displayPoem(author, title) {
         );
         const json = await response.json();
         const lineCount = json[0].lines.length;
-        console.log(lineCount);
         lines = json[0].lines;
     } catch (error) {
-        console.log(error);
+        console.error(error);
         lines = "An error occured. Please check your Internet connection."
     }
     organizePoemLayout(author, title, lines);
@@ -79,7 +95,6 @@ async function displaySavedPoemsAndListen() {
     popup.innerHTML = '';
     await displaySavedPoems();
     const thumbnails = document.querySelectorAll('.thumbnail');
-    console.log(thumbnails);
     thumbnails.forEach(async (thumbnail) => {
         thumbnail.addEventListener('click', async () => {
             const title = thumbnail.children[0].innerText;
@@ -140,7 +155,6 @@ function uncolorHeart() {
 function listenToDeletePoem(author, title) {
     const trash = document.querySelector('.fa-trash-alt');
     if (trash) {
-        console.log("trying to delete now");
         trash.addEventListener('click', () => {
             deletePoem(author, title);
             showDeletedMessage();

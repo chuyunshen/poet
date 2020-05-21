@@ -3,8 +3,12 @@ import {getTodayDate} from './utils.js'
 /* Returns true if a poem is already liked. False, otherwise.
  */
 export function isAlreadySaved(author, title) {
-    return new Promise ((resolve, reject) => {
+    return new Promise ((resolve) => {
         chrome.storage.sync.get(['saved_poems'], function(result) {
+            if (!result['saved_poems']) {
+                resolve(false);
+                return;
+            }
             for (let pair of result['saved_poems']) {
                 if (pair[0] == author && pair[1] == title) {
                     resolve(true);
@@ -19,7 +23,7 @@ export function isAlreadySaved(author, title) {
 /* Returns a promise with saved poems.
  */
 export function getSavedPoems() {
-    return new Promise ((resolve, reject) => {
+    return new Promise ((resolve) => {
         chrome.storage.sync.get(['saved_poems'], function(result) {
             resolve(result['saved_poems']);
         });
@@ -41,7 +45,6 @@ export function savePoem(author, title) {
         }
         array.push([author, title]);
         chrome.storage.sync.set({"saved_poems":array}, function() {
-            console.log("Saved poem");
         });
     }
 };
@@ -49,14 +52,15 @@ export function savePoem(author, title) {
 /* Returns the lastest date when a "today" poem is saved.
  */
 export function getLatestDate() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
-        let result = "some random string";
+        let result = null;
         chrome.storage.sync.get(['today'],
             function(data) {
                 if (data['today']) {
                     result = data['today'].date;
-                    console.log(result);
+                    resolve(result);
+                } else {
                     resolve(result);
                 }
             });
@@ -66,7 +70,7 @@ export function getLatestDate() {
 /* Returns today's poem.
  */
 export function getTodayPoem() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         chrome.storage.sync.get(['today'],
         function(data) {
             resolve(data['today'].poem);
@@ -77,7 +81,7 @@ export function getTodayPoem() {
 /* Clears today's poem. A helper for testing.
  */
 export function clearTodayPoem() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
         chrome.storage.sync.get(['today'],
             function(data) {
@@ -85,9 +89,8 @@ export function clearTodayPoem() {
             }
         );
 
-        function update(object) {
+        function update() {
             chrome.storage.sync.set({'today': {}}, function() {
-                console.log("clear today poem");
                 resolve();
             });
         };
@@ -108,10 +111,7 @@ export function setTodayPoem(author, title, lines) {
             date: getTodayDate(),
             poem: {author, title, lines}
         }
-        chrome.storage.sync.set({'today': object}, function() {
-            console.log(object);
-            console.log("Saved today's poem");
-        });
+        chrome.storage.sync.set({'today': object});
     }
 };
 
@@ -135,8 +135,6 @@ export function deletePoem(author, title) {
                 break;
             }
         }
-        chrome.storage.sync.set({"saved_poems":array}, function() {
-            console.log("Removed from saved poems");
-        });
+        chrome.storage.sync.set({"saved_poems":array});
     }
 };

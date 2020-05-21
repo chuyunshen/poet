@@ -53,11 +53,22 @@ input:focus {
 
 }
 
-.title {
+.title, #welcome {
     display: block;
     padding: 20px;
     font-size: 14px;
+}
+
+.title {
     cursor: pointer;
+}
+
+#welcome {
+    white-space: pre-wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .author {
@@ -84,17 +95,19 @@ input:focus {
     margin: auto;
 }
 
+.fa-heart, .fa-comment-dots, .fa-trash-alt{
+    cursor: pointer;
+}
+
 .fa-heart {
     font-size: 2em;
     color: #cc241d;
+    cursor: pointer;
 }
 
 .fa-comment-dots {
     font-size: 2em;
     color: grey;
-}
-
-.fa:hover {
     cursor: pointer;
 }
 

@@ -42,7 +42,7 @@ async function displayRandomPoem(authorToDisplay,
                 lineCount = json[0].lines.length;
                 errorOccured = false;
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
         const lines = json[0].lines;
@@ -180,7 +180,7 @@ async function displayPoetImage(authorToDisplay, poemWrapper) {
             image.style.cssFloat = getRandomInt(2) ? "left" : "right";
         }
     } catch(error) {
-        console.log("No poet image is found.");
+        // No poet image is found.
         return;
     }
 }
@@ -241,16 +241,11 @@ function displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper,
 async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     // await clearTodayPoem();
     const today = getTodayDate();
-    console.log(today);
     const lastestDate = await getLatestDate();
-    console.log(lastestDate);
-    console.log(today == lastestDate);
     if (today == lastestDate) {
         // If there is already a poem from today saved, fetch it from
         // Chrome storage
         const todayPoem = await getTodayPoem();
-        console.log("printing today poem");
-        console.log(todayPoem);
         displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper, todayPoem);
     } else {
         // otherwise, display a random poem and save it to today's poem in
