@@ -9,3 +9,13 @@ export const COLORS6 = ['#FCAA67', '#DF9E96', '#FFFFC7', '#A2CFCF', '#C8BEC0', '
 
 // Default max number of lines of poems
 export const MAX_LINE= 30;
+
+export const WELCOME_MESSAGE = `Heigh!
+
+Thank you for installing Poet.
+
+With Poet, you will be shown a different poem every day.
+
+You can use the grey refresh button at the bottom right of the tab to fetch a different poem.
+
+And the heart button to save a poem to your favourites!`

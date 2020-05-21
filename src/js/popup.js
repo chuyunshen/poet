@@ -1,22 +1,13 @@
 import {deletePoem, getSavedPoems} from './storage.js';
-import {appendLineBreaks} from './utils.js'
-
-const WELCOME_MESSAGE = `Heigh!
-
-Thank you for installing Poet.
-
-With Poet, you will be shown a different poem every day.
-
-You can use the grey refresh button at the bottom right of the tab to fetch a different poem.
-
-And the heart button to save a poem to your favourites!`
+import {appendLineBreaks} from './utils.js';
+import {WELCOME_MESSAGE} from './config.js';
 
 /* Displays all the saved poems.
  */
 async function displaySavedPoems() {
     return new Promise (async (resolve) => {
         const poemList = await getSavedPoems();
-        if (!poemList.length) {
+        if (!poemList) {
             const popup = document.querySelector('#popup');
             let welcomeMessage = document.createElement('div');
             welcomeMessage.id = 'welcome';
@@ -126,7 +117,6 @@ function displayContact() {
     emailText.target = '_blank';
     contactBox.appendChild(emailText);
     popup.appendChild(contactBox);
-    const bubble = document.querySelector('.fa-comment-dots');
 }
 
 function colorBubble() {

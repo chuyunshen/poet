@@ -149,7 +149,6 @@ input:focus {
 }
 
 .contact-box {
-    margin-top: 20px;
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -157,6 +156,11 @@ input:focus {
     font-size: 14px;
     justify-content: center;
     align-items: center;
+    height: 100%;
+}
+
+a {
+    padding: 10px;
 }
 
 a:link {

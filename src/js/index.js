@@ -10,7 +10,7 @@ import {MAX_LINE, COLORS} from './config.js';
  */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         let response, json, author, title;
         let lineCount = 200;
         let errorOccured = true;
