@@ -2,7 +2,7 @@
     "name": "Poet",
     "version": "1.0.1",
     "author": "Chuyun Shen",
-    "description": "Displays short but classy daily poems upon new tab launches.",
+    "description": "Displays short and classic daily poems upon new tab launches.",
     "manifest_version": 2,
     "chrome_url_overrides" : {  "newtab": "src/index.html"},
     "permissions": ["storage"],
