@@ -3,6 +3,13 @@ import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem,
 import {appendLineBreaks, getTodayDate, getRandomInt} from './utils.js';
 import {MAX_LINE, COLORS} from './config.js';
 
+
+async function sendMessage(item) {
+    return new Promise((resolve) => {
+        chrome.runtime.sendMessage(item, response => resolve(response))
+    });
+}
+
 /* Displays a random poem fetched from poetryDB.
  * If the poem is longer than the max number of lines defined in config.js,
  * the function requeries.
@@ -14,37 +21,23 @@ async function displayRandomPoem(authorToDisplay,
         let response, json, author, title;
         let lineCount = 200;
         let errorOccured = true;
-        while (lineCount > MAX_LINE || errorOccured) {
             try {
                 // Get random author
-                response = await fetch(
-                    'http://poetrydb.org/author',
-                    { mode: 'cors' },
-                );
-                json = await response.json();
+                json = await sendMessage({contentScriptQuery: "queryAuthors"});
                 const authors = json.authors;
                 author = authors[getRandomInt(authors.length)];
-
+                console.log("rand author", author);
                 // Get random title with given author
-                response = await fetch(
-                    `http://poetrydb.org/author/${author}/title`,
-                    { mode: 'cors' },
-                );
-                const titles = await response.json();
+                const titles = await sendMessage({contentScriptQuery: "queryGivenAuthorGetTitles", author});
                 title = titles[getRandomInt(titles.length)].title;
 
                 // Get random poem
-                response = await fetch(
-                    `http://poetrydb.org/title/${title}`,
-                    { mode: 'cors'},
-                );
-                json = await response.json();
+                json = await sendMessage({contentScriptQuery: "queryTitle", title});
                 lineCount = json[0].lines.length;
                 errorOccured = false;
             } catch (error) {
                 console.error(error);
             }
-        }
         const lines = json[0].lines;
 
         // display
@@ -144,28 +137,11 @@ function unlike(authorToDisplay, titleToDisplay) {
 async function displayPoetImage(authorToDisplay, poemWrapper) {
     let author = authorToDisplay.textContent;
     // Error will occur if there isn't a wiki photo for that author
-    let url = 'https://en.wikipedia.org/w/api.php';
-    let params = {
-        action: "query",
-        prop: "pageimages|pageterms",
-        titles: "",
-        format: "json",
-        fomatversion: "2",
-        piprop: "thumbnail",
-        pithumbsize: "600",
-    };
-    params.titles = author;
-    url = url + "?origin=*";
-    Object.keys(params).forEach((key) => {
-        url += "&" + key + "=" + params[key];});
-
-    let response;
     let json;
     try {
-        response = await fetch(url);
-        json = await response.json();
-        var pages = json.query.pages;
-        for (var page in pages) {
+        json = await sendMessage({contentScriptQuery: "queryAuthorImage", author});
+        const pages = json.query.pages;
+        for (const page in pages) {
             const imageUrl = pages[page].thumbnail.source;
             const image = document.createElement('img');
             image.src = imageUrl;
@@ -286,6 +262,7 @@ async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
     setHeartColor(authorToDisplay.textContent, titleToDisplay.textContent);
 }
 
+navigator.serviceWorker.register('background.js').then(x => console.log('done', x));
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';
 var authorToDisplay = document.createElement('h2');

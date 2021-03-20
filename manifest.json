@@ -4,11 +4,10 @@
     "author": "Chuyun Shen",
     "description": "Displays short and classic daily poems upon new tab launches.",
     "manifest_version": 2,
-    "chrome_url_overrides" : {  "newtab": "src/index.html"},
-    "permissions": ["storage"],
+    "chrome_url_overrides" : {  "newtab": "index.html"},
+    "permissions": ["storage", "*://*/*"],
     "browser_action": {
-        "default_popup":
-        "src/popup.html",
+        "default_popup": "popup.html",
         "default_icon":
         {
             "16": "images/poet16.png",
@@ -18,11 +17,14 @@
         }
     },
     "icons":
-    {
-        "16": "images/poet16.png",
-        "32": "images/poet32.png",
-        "48": "images/poet48.png",
-        "128": "images/poet128.png"
+        {
+            "16": "images/poet16.png",
+            "32": "images/poet32.png",
+            "48": "images/poet48.png",
+            "128": "images/poet128.png"
+        },
+    "background": {
+        "service_worker": "background.js"
     },
     "content_security_policy": "script-src 'self' https://kit.fontawesome.com; object-src 'self'"
 

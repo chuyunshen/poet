@@ -2,6 +2,12 @@ import {deletePoem, getSavedPoems} from './storage.js';
 import {appendLineBreaks} from './utils.js';
 import {WELCOME_MESSAGE} from './config.js';
 
+async function sendMessage(item) {
+    return new Promise((resolve) => {
+        chrome.runtime.sendMessage(item, response => resolve(response))
+    });
+}
+
 /* Displays all the saved poems.
  */
 async function displaySavedPoems() {
@@ -37,12 +43,7 @@ async function displaySavedPoems() {
 async function displayPoem(author, title) {
     let lines;
     try {
-        const response = await fetch(
-            `http://poetrydb.org/title/${title}`,
-            { mode: 'cors'},
-        );
-        const json = await response.json();
-        const lineCount = json[0].lines.length;
+        const json = await sendMessage({contentScriptQuery: "queryTitle", title});
         lines = json[0].lines;
     } catch (error) {
         console.error(error);

@@ -10,7 +10,7 @@ export const COLORS6 = ['#FCAA67', '#DF9E96', '#FFFFC7', '#A2CFCF', '#C8BEC0', '
 // Default max number of lines of poems
 export const MAX_LINE= 30;
 
-export const WELCOME_MESSAGE = `Heigh!
+export const WELCOME_MESSAGE = `Hi!
 
 Thank you for installing Poet.
 
