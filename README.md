@@ -8,7 +8,7 @@ A lightweight Chrome extension that displays a new poem every day upon new tab l
 </p>
 
 ## Installation
-Download Poet from the <a href="https://chrome.google.com/webstore/detail/poet/hkjjflfleaejocakemkheofjcmkepbcm"> Chrome extension web store.
+Install Poet from the <a href="https://chrome.google.com/webstore/detail/poet/hkjjflfleaejocakemkheofjcmkepbcm"> Chrome web store.
 
 ## Demonstration
 <p align="center">
@@ -44,7 +44,7 @@ Refresh for a new poem.
 Feel free to open an issue and/or make a pull request.
 
 ## Copyright and License
-Poems are queried from [PoetryDB](https://github.com/thundercomb/poetrydb#license).
+Poems are queried from [PoetryDB](https://github.com/thundercomb/poetrydb).
 
 Poet images are queried from [MediaWiki](https://www.mediawiki.org/wiki/MediaWiki).
 
