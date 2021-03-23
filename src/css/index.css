@@ -60,7 +60,12 @@ img {
     max-width: 450px;
 }
 
-.panel:not(:first-child) {
+.thin-panel {
+    padding: 20px;
+    max-width: 300px;
+}
+
+.panel:not(:first-child) .thin-panel:not(:first-child) {
     padding-top: 20px;
 }
 

@@ -72,9 +72,9 @@ function organizePoemLayout(titleToDisplay,
         poemWrapper.appendChild(leftPanel);
         poemWrapper.appendChild(rightPanel);
     } else if (DOUBLE_PANEL_MAX_LINES <= lineCount && lineCount < TRIPLE_PANEL_MAX_LINES ) {
-        let leftPanel = makePanel();
-        let middlePanel = makePanel();
-        let rightPanel = makePanel();
+        let leftPanel = makeThinPanel();
+        let middlePanel = makeThinPanel();
+        let rightPanel = makeThinPanel();
         // Left panel will have title and author appended.
         leftPanel.appendChild(titleToDisplay);
         leftPanel.appendChild(authorToDisplay);
@@ -108,6 +108,14 @@ function makePanel() {
     const panel = document.createElement('div');
     panel.classList.add("poem");
     panel.classList.add("panel");
+    return panel;
+}
+
+function makeThinPanel() {
+    const panel = document.createElement('div');
+    panel.classList.add("poem");
+    panel.classList.add("panel");
+    panel.classList.add("thin-panel");
     return panel;
 }
 

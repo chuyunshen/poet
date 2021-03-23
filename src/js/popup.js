@@ -114,7 +114,7 @@ function displayContact() {
     contactBox.appendChild(reportText);
     const emailText = document.createElement('a');
     emailText.textContent = 'Contact me';
-    emailText.href = 'mailto:chuyunshen123@gmail.com';
+    emailText.href = 'mailto:chuyun.shen@outlook.com';
     emailText.target = '_blank';
     contactBox.appendChild(emailText);
     popup.appendChild(contactBox);
