@@ -7,8 +7,9 @@ export const COLORS4 = ['#AAFAC8', '#C7FFED', '#BBC8CA', '#C9CBCA', '#D7CDCA', '
 export const COLORS5 = ['#BDD9BF', '#DED18B', '#FFC857', '#FFE4AB', '#FFF2D5', '#FFF9EA'];
 export const COLORS6 = ['#FCAA67', '#DF9E96', '#FFFFC7', '#A2CFCF', '#C8BEC0', '#B0F2B4'];
 
-// Default max number of lines of poems
-export const MAX_LINE= 30;
+export const SINGLE_PANEL_MAX_LINES = 15;
+export const DOUBLE_PANEL_MAX_LINES = 40;
+export const TRIPLE_PANEL_MAX_LINES = 65;
 
 export const WELCOME_MESSAGE = `Hi!
 
@@ -16,6 +17,6 @@ Thank you for installing Poet.
 
 With Poet, you will be shown a different poem every day.
 
-You can use the grey refresh button at the bottom right of the tab to fetch a different poem.
+You can use the grey refresh button at the bottom right of the page to fetch a different poem,
 
-And the heart button to save a poem to your favourites!`
+and the heart button to save a poem to your favourites!`

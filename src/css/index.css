@@ -10,9 +10,6 @@ body {
     justify-content: center;
     height: 100%;
 }
-body,html {
-    height:90%;
-}
 
 #title {
     display: block;
@@ -55,6 +52,7 @@ img {
     flex-wrap: wrap;
     padding: 0 3%;
     align-items: center;
+    height: 100vh;
 }
 
 .panel {
@@ -63,7 +61,7 @@ img {
 }
 
 .panel:not(:first-child) {
-    padding-top: 80px;
+    padding-top: 20px;
 }
 
 footer {

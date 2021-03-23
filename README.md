@@ -45,5 +45,7 @@ Feel free to open an issue and/or make a pull request.
 
 ## Copyright and License
 Poems are queried from [PoetryDB](https://github.com/thundercomb/poetrydb#license).
+
 Poet images are queried from [MediaWiki](https://www.mediawiki.org/wiki/MediaWiki).
+
 Poet is released under the [MIT License](https://opensource.org/licenses/MIT).

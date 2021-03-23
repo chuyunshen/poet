@@ -1,9 +1,9 @@
 import {savePoem, deletePoem, getLatestDate, getTodayPoem, setTodayPoem,
     clearTodayPoem, isAlreadySaved} from './storage.js';
 import {appendLineBreaks, getTodayDate, getRandomInt} from './utils.js';
-import {MAX_LINE, COLORS} from './config.js';
+import {SINGLE_PANEL_MAX_LINES, DOUBLE_PANEL_MAX_LINES, TRIPLE_PANEL_MAX_LINES, COLORS} from './config.js';
 
-
+/* Helper function to communicate with the service worker. */
 async function sendMessage(item) {
     return new Promise((resolve) => {
         chrome.runtime.sendMessage(item, response => resolve(response))
@@ -18,53 +18,51 @@ async function sendMessage(item) {
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
     return new Promise(async (resolve) => {
-        let response, json, author, title;
-        let lineCount = 200;
-        let errorOccured = true;
-            try {
-                // Get random author
-                json = await sendMessage({contentScriptQuery: "queryAuthors"});
-                const authors = json.authors;
-                author = authors[getRandomInt(authors.length)];
-                console.log("rand author", author);
-                // Get random title with given author
-                const titles = await sendMessage({contentScriptQuery: "queryGivenAuthorGetTitles", author});
-                title = titles[getRandomInt(titles.length)].title;
+        let json, author, title;
+        try {
+            // Get random author
+            json = await sendMessage({contentScriptQuery: "queryAuthors"});
+            const authors = json.authors;
+            author = authors[getRandomInt(authors.length)];
+            console.log("random author", author);
 
-                // Get random poem
-                json = await sendMessage({contentScriptQuery: "queryTitle", title});
-                lineCount = json[0].lines.length;
-                errorOccured = false;
-            } catch (error) {
-                console.error(error);
-            }
+            // Get random title with given author
+            const titles = await sendMessage(
+                {contentScriptQuery: "queryGivenAuthorGetTitles", author});
+            title = titles[getRandomInt(titles.length)].title;
+
+            // Get random poem
+            json = await sendMessage({contentScriptQuery: "queryTitle", title});
+        } catch (error) {
+            console.error("An error occurred while fetching a random poem: ", error);
+        }
         const lines = json[0].lines;
 
         // display
         titleToDisplay.textContent = title;
         authorToDisplay.textContent = author;
-        organizePoemLayout(titleToDisplay, authorToDisplay,
-            poemWrapper, lines);
+        organizePoemLayout(titleToDisplay, authorToDisplay, poemWrapper, lines);
         resolve(lines);
     });
 }
 
 /* Helper function to organize the layout.
  * Split given poem into two panels if the poem is longer
- * than MAX_LINE / 2 lines
+ * than SINGLE_PANEL_MAX_LINES
  */
 function organizePoemLayout(titleToDisplay,
     authorToDisplay, poemWrapper, lines) {
     const lineCount = lines.length;
+    console.log(lineCount);
 
-    if (lineCount > MAX_LINE / 2) {
+    if (lineCount > SINGLE_PANEL_MAX_LINES && lineCount < DOUBLE_PANEL_MAX_LINES) {
         let leftPanel = makePanel();
         let rightPanel = makePanel();
         // Left panel will have title and author appended.
         leftPanel.appendChild(titleToDisplay);
         leftPanel.appendChild(authorToDisplay);
-        const leftLines = lines.slice(0, MAX_LINE / 2);
-        const rightLines = lines.slice(MAX_LINE / 2, lineCount);
+        const leftLines = lines.slice(0, SINGLE_PANEL_MAX_LINES);
+        const rightLines = lines.slice(SINGLE_PANEL_MAX_LINES, lineCount);
         let leftText = makeBox();
         let rightText = makeBox();
         leftText.textContent = appendLineBreaks(leftLines);
@@ -72,6 +70,28 @@ function organizePoemLayout(titleToDisplay,
         leftPanel.appendChild(leftText);
         rightPanel.appendChild(rightText);
         poemWrapper.appendChild(leftPanel);
+        poemWrapper.appendChild(rightPanel);
+    } else if (DOUBLE_PANEL_MAX_LINES <= lineCount && lineCount < TRIPLE_PANEL_MAX_LINES ) {
+        let leftPanel = makePanel();
+        let middlePanel = makePanel();
+        let rightPanel = makePanel();
+        // Left panel will have title and author appended.
+        leftPanel.appendChild(titleToDisplay);
+        leftPanel.appendChild(authorToDisplay);
+        const leftLines = lines.slice(0, SINGLE_PANEL_MAX_LINES);
+        const middleLines = lines.slice(SINGLE_PANEL_MAX_LINES, DOUBLE_PANEL_MAX_LINES);
+        const rightLines = lines.slice(DOUBLE_PANEL_MAX_LINES, lineCount);
+        let leftText = makeBox();
+        let middleText = makeBox();
+        let rightText = makeBox();
+        leftText.textContent = appendLineBreaks(leftLines);
+        middleText.textContent = appendLineBreaks(middleLines);
+        rightText.textContent = appendLineBreaks(rightLines);
+        leftPanel.appendChild(leftText);
+        middlePanel.appendChild(middleText);
+        rightPanel.appendChild(rightText);
+        poemWrapper.appendChild(leftPanel);
+        poemWrapper.appendChild(middlePanel);
         poemWrapper.appendChild(rightPanel);
     } else {
         let panel = makePanel();
@@ -109,7 +129,6 @@ function unfillHeart() {
     heart.classList.remove("fas");
     heart.classList.add("far");
 }
-
 
 /* Fills the heart button and save the poem to Chrome storage.
  */
@@ -203,11 +222,11 @@ function getCoords(element) {
 
 /* Displays the given poem.
  */
-function displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper,
+function displayGivenPoem(titleToDisplay, authorToDisplay, poemWrapper,
     todayPoem) {
     authorToDisplay.textContent = todayPoem.author;
     titleToDisplay.textContent = todayPoem.title;
-    organizePoemLayout(authorToDisplay, titleToDisplay, poemWrapper, todayPoem.lines);
+    organizePoemLayout(titleToDisplay, authorToDisplay, poemWrapper, todayPoem.lines);
 }
 
 /* This function first checks if there is a poem saved for today, if yes,
@@ -219,10 +238,10 @@ async function displayAll(authorToDisplay, titleToDisplay, poemWrapper) {
     const today = getTodayDate();
     const lastestDate = await getLatestDate();
     if (today == lastestDate) {
-        // If there is already a poem from today saved, fetch it from
+        // If there is already a poem from today saved, retrieve it from
         // Chrome storage
         const todayPoem = await getTodayPoem();
-        displayGivenPoem(authorToDisplay, titleToDisplay, poemWrapper, todayPoem);
+        displayGivenPoem(titleToDisplay, authorToDisplay, poemWrapper, todayPoem);
     } else {
         // otherwise, display a random poem and save it to today's poem in
         // chrome storage.
