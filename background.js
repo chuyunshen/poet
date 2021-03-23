@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.contentScriptQuery == "randomPoem") {
-        const url = `http://poetrydb.org/random`;
+        const url = `https://poetrydb.org/random`;
         fetch(url)
                 .then(response => response.json())
                 .then(response => {

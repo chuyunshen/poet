@@ -5,7 +5,7 @@
     "description": "Displays short and classic daily poems upon new tab launches.",
     "manifest_version": 2,
     "chrome_url_overrides" : {  "newtab": "index.html"},
-    "permissions": ["storage", "*://*/*"],
+    "permissions": ["storage", "*://poetrydb.org/*", "*://en.wikipedia.org/*"],
     "browser_action": {
         "default_popup": "popup.html",
         "default_icon":
