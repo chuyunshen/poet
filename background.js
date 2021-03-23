@@ -1,56 +1,22 @@
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if (request.contentScriptQuery == "queryTitle") {
-        const url = `http://poetrydb.org/title/${request.title}`;
-        console.log(url);
+      if (request.contentScriptQuery == "randomPoem") {
+        const url = `http://poetrydb.org/random`;
         fetch(url)
                 .then(response => response.json())
                 .then(response => {
-                    console.log("queryTitle", response);
+                    console.log(response);
                     sendResponse(response);
                 })
-                .catch(error => console.log("An error occurred when fetching " + url, error));
+                .catch(error => console.log("An error occurred when fetching a random poem" + url, error));
         return true;
     }
-  });
-
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.contentScriptQuery == "queryAuthors") {
-            const url = 'http://poetrydb.org/author';
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(response => {
-                    console.log("queryAuthors", response);
-                    sendResponse(response);
-                })
-                .catch(error => console.log("An error occurred when fetching " + url, error));
-            return true;
-        }
-  });
-
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        if (request.contentScriptQuery == "queryGivenAuthorGetTitles") {
-            const url = `http://poetrydb.org/author/${request.author}/title`;
-            console.log(url);
-            fetch(url)
-                .then(response => response.json())
-                .then(response => {
-                    console.log("author title", response);
-                    sendResponse(response);
-                })
-                .catch(error => console.log("An error occurred when fetching " + url, error));
-            return true;
-        }
   });
   
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.contentScriptQuery == "queryAuthorImage") {
         let url = 'https://en.wikipedia.org/w/api.php';
-        console.log(url);
         let params = {
             action: "query",
             prop: "pageimages|pageterms",

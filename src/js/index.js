@@ -18,25 +18,16 @@ async function sendMessage(item) {
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
     return new Promise(async (resolve) => {
-        let json, author, title;
+        let json, author, title, lines;
         try {
-            // Get random author
-            json = await sendMessage({contentScriptQuery: "queryAuthors"});
-            const authors = json.authors;
-            author = authors[getRandomInt(authors.length)];
-            console.log("random author", author);
-
-            // Get random title with given author
-            const titles = await sendMessage(
-                {contentScriptQuery: "queryGivenAuthorGetTitles", author});
-            title = titles[getRandomInt(titles.length)].title;
-
             // Get random poem
-            json = await sendMessage({contentScriptQuery: "queryTitle", title});
+            json = await sendMessage({contentScriptQuery: "randomPoem"});
+            author = json[0].author;
+            title = json[0].title;
+            lines = json[0].lines;
         } catch (error) {
             console.error("An error occurred while fetching a random poem: ", error);
         }
-        const lines = json[0].lines;
 
         // display
         titleToDisplay.textContent = title;
@@ -53,7 +44,6 @@ async function displayRandomPoem(authorToDisplay,
 function organizePoemLayout(titleToDisplay,
     authorToDisplay, poemWrapper, lines) {
     const lineCount = lines.length;
-    console.log(lineCount);
 
     if (lineCount > SINGLE_PANEL_MAX_LINES && lineCount < DOUBLE_PANEL_MAX_LINES) {
         let leftPanel = makePanel();
@@ -289,7 +279,8 @@ async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
     setHeartColor(authorToDisplay.textContent, titleToDisplay.textContent);
 }
 
-navigator.serviceWorker.register('background.js').then(x => console.log('done', x));
+navigator.serviceWorker.register('background.js')
+                        .then(x => console.log("Registered service worker: ", x));
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';
 var authorToDisplay = document.createElement('h2');
