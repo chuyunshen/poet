@@ -1,6 +1,6 @@
 {
     "name": "Poet",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "author": "Chuyun Shen",
     "description": "Displays short and classic daily poems upon new tab launches.",
     "manifest_version": 2,

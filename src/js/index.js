@@ -280,7 +280,7 @@ async function displayRefresh(authorToDisplay, titleToDisplay, poemWrapper) {
 }
 
 navigator.serviceWorker.register('background.js')
-                        .then(x => console.log("Registered service worker: ", x));
+                       .then(message => console.log("Registered service worker: ", message));
 var titleToDisplay = document.createElement('h1');
 titleToDisplay.id = 'title';
 var authorToDisplay = document.createElement('h2');
