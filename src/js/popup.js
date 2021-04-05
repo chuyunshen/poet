@@ -117,7 +117,13 @@ function displayContact() {
     emailText.href = 'mailto:chuyun.shen@outlook.com';
     emailText.target = '_blank';
     contactBox.appendChild(emailText);
+    const reviewText = document.createElement('a');
+    reviewText.textContent = 'Leave a review';
+    reviewText.href = 'https://chrome.google.com/webstore/detail/poet-daily-poem-reads/hkjjflfleaejocakemkheofjcmkepbcm';
+    reviewText.target = '_blank';
+    contactBox.appendChild(reviewText);
     popup.appendChild(contactBox);
+
 }
 
 function colorBubble() {
