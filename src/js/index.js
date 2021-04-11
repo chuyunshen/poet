@@ -17,24 +17,23 @@ async function sendMessage(item) {
  */
 async function displayRandomPoem(authorToDisplay,
     titleToDisplay, poemWrapper) {
-    return new Promise(async (resolve) => {
-        let json, author, title, lines;
-        try {
-            // Get random poem
-            json = await sendMessage({contentScriptQuery: "randomPoem"});
-            author = json[0].author;
-            title = json[0].title;
-            lines = json[0].lines;
-        } catch (error) {
-            console.error("An error occurred while fetching a random poem: ", error);
-        }
+    let json, author, title, lines;
+    try {
+        // Get random poem
+        json = await sendMessage({contentScriptQuery: "randomPoem"});
+        console.log("random poem", json);
+        author = json[0].author;
+        title = json[0].title;
+        lines = json[0].lines;
+    } catch (error) {
+        console.error("An error occurred while fetching a random poem: ", error);
+    }
 
-        // display
-        titleToDisplay.textContent = title;
-        authorToDisplay.textContent = author;
-        organizePoemLayout(titleToDisplay, authorToDisplay, poemWrapper, lines);
-        resolve(lines);
-    });
+    // display
+    titleToDisplay.textContent = title;
+    authorToDisplay.textContent = author;
+    organizePoemLayout(titleToDisplay, authorToDisplay, poemWrapper, lines);
+    return(lines);
 }
 
 /* Helper function to organize the layout.

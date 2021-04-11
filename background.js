@@ -1,5 +1,7 @@
+console.log("background");
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        console.log("listening");
       if (request.contentScriptQuery == "randomPoem") {
         const url = `https://poetrydb.org/random`;
         fetch(url)
@@ -12,9 +14,27 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
   });
+
+  chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log("listening2");
+      if (request.contentScriptQuery == "queryTitle") {
+        const url = `http://poetrydb.org/title/${request.title}`;
+        console.log(url);
+        fetch(url)
+                .then(response => response.json())
+                .then(response => {
+                    console.log("queryTitle", response);
+                    sendResponse(response);
+                })
+                .catch(error => console.log("An error occurred when fetching " + url, error));
+        return true;
+    }
+  });
   
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+        console.log("listening3");
         if (request.contentScriptQuery == "queryAuthorImage") {
         let url = 'https://en.wikipedia.org/w/api.php';
         let params = {
