@@ -14,21 +14,21 @@ Install Poet from the <a href="https://chrome.google.com/webstore/detail/poet/hk
 <p align="center">
 Displays a new poem every day.
 <br>
-<img src="https://imgur.com/7TCxx9G.jpg" alt="A poem a day" height="400px">
+<img src="https://imgur.com/7TCxx9G.jpg" alt="A poem a day">
 </p>
 <br>
 
 <p align="center">
 Add poems to your favourites.
 <br>
-<img src="https://imgur.com/0yBREZ0.gif" alt="Like poem" height="400px">
+<img src="https://imgur.com/0yBREZ0.gif" alt="Like poem">
 </p>
 <br>
 
 <p align="center">
 View and manage your saved poems.
 <br>
-<img src="https://imgur.com/c3tUqx4.gif" alt="Manage poems" height="400px">
+<img src="https://imgur.com/c3tUqx4.gif" alt="Manage poems">
 <br>
 </p>
 <br>
@@ -36,7 +36,7 @@ View and manage your saved poems.
 <p align="center">
 Refresh for a new poem.
 <br>
-<img src="https://imgur.com/99xA9qf.gif" alt="Refresh poems" height="400px">
+<img src="https://imgur.com/99xA9qf.gif" alt="Refresh poems">
 <br>
 </p>
 

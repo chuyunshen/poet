@@ -1,6 +1,6 @@
 {
     "name": "Poet - New Tab Daily Poem Reads",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "author": "Chuyun Shen",
     "description": "Displays short and classic daily poems upon new tab launches.",
     "manifest_version": 2,
